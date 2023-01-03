@@ -1,16 +1,17 @@
 import {
   BadRequestException,
   Body,
-  Controller,
+  Controller, Delete,
   HttpCode,
   Inject,
-  Post,
+  Post, UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { ALREADY_EXISTS_ERROR } from './auth.constants';
+import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -41,6 +42,14 @@ export class AuthController {
       .authService
       .validateUser(login, password);
 
-    return this.authService.login(email)
+    return this.authService.login(email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Delete('delete')
+  async delete(@Body() { login }: AuthDto) {
+    return this.authService.deleteUser(login);
   }
 }
