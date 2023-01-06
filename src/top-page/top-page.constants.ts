@@ -1,0 +1,1 @@
+export const PAGE_NOT_FOUND_ERROR = `The page You looking for is not exists.`
