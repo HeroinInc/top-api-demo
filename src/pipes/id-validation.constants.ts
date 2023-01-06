@@ -1,0 +1,1 @@
+export const ID_VALIDATION_ERROR = 'The id was not supported or wrong'
