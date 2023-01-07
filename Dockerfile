@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-ubuntu
 WORKDIR /opt/app
 ADD package.json package.json
 ENV PYTHONUNBUFFERED=1
