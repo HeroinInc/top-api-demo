@@ -29,20 +29,30 @@ export class TopPageService {
   }
 
   async findByCategory({ firstCategory }: FindTopPageDto) {
-    return this.topPageModel.find({ firstCategory }).exec();
+    return this.topPageModel.aggregate([
+      {
+        $match: { firstCategory },
+      },
+      {
+        $group: {
+          _id: { secondCategory: '$secondCategory' },
+          pages: { $push: { alias: '$alias', title: '$title' } },
+        },
+      },
+    ]).exec();
   }
 
   async findByAlias(alias: string) {
     return this.topPageModel.findOne({ alias }).exec();
   }
 
-  async findPageByText(word: string) {
-    const regex = new RegExp(word);
+  async findPageByText(text: string) {
     return this.topPageModel.find({
-      $or: [
-        { seoText: { $regex: regex } },
-        { tags: { $in: [regex] } },
-      ],
+      $text: {
+        $search: text,
+        $caseSensitive: false,
+        $diacriticSensitive: false,
+      },
     }).exec();
   }
 }

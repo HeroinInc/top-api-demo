@@ -94,9 +94,9 @@ export class TopPageController {
     return page
   }
 
-  @Get("textSearch/:word")
-  async findByText(@Param('word') word: string) {
-    const pages = await this.topPageService.findPageByText(word)
+  @Get("textSearch/:text")
+  async findByText(@Param('text') text: string) {
+    const pages = await this.topPageService.findPageByText(text)
 
     if(!pages || pages.length < 1) {
       throw new NotFoundException(PAGE_NOT_FOUND_ERROR)
