@@ -1,8 +1,10 @@
 FROM node:14-alpine
 WORKDIR /opt/app
 ADD package.json package.json
-RUN apt-get update
-RUN apt-get install python
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
 RUN npm install
 ADD . .
 RUN npm run build
