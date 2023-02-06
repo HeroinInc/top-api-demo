@@ -1,4 +1,4 @@
-FROM sitespeedio/node:ubuntu-22.04-nodejs-18.11.1
+FROM node:14-alpine3.17
 WORKDIR /opt/app
 ADD package.json package.json
 RUN npm install --global yarn
